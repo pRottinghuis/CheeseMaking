@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cheesemaking:block/cheese_block"
+    }
+  }
+}

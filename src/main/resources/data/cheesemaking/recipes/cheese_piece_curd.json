@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AA"
+  ],
+  "key": {
+    "A": {
+      "item": "cheesemaking:cheese_curd"
+    }
+  },
+  "result": {
+    "item": "cheesemaking:cheese_piece"
+  }
+}
