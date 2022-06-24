@@ -14,14 +14,14 @@ public class DataGeneration {
 
         if (event.includeClient()) {
             // Models, assets, etc.
-            dataGen.addProvider(new ModBlockStatesProvider(dataGen, helper));
-            dataGen.addProvider(new ModLanguageProvider(dataGen));
+            dataGen.addProvider(true, new ModBlockStatesProvider(dataGen, helper));
+            dataGen.addProvider(true, new ModLanguageProvider(dataGen));
 
         }
         if (event.includeServer()) {
             // Loot tables, recipes, tags, etc.
-            dataGen.addProvider(new ModLootTableProvider(dataGen));
-            dataGen.addProvider(new ModRecipeProvider(dataGen));
+            dataGen.addProvider(true, new ModLootTableProvider(dataGen));
+            dataGen.addProvider(true, new ModRecipeProvider(dataGen));
         }
     }
 }

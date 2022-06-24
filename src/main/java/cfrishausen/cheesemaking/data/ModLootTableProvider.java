@@ -1,54 +1,58 @@
 package cfrishausen.cheesemaking.data;
 
-import cfrishausen.cheesemaking.CheeseMaking;
-import cfrishausen.cheesemaking.registry.ModBlocks;
-import cfrishausen.cheesemaking.registry.ModItems;
-import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ModLootTableProvider extends LootTableProvider {
+
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static final Logger LOGGER = LogManager.getLogger();
-    private final DataGenerator generator;
+
+    protected final Map<Block, LootTable.Builder> lootTables = new HashMap<>();
+    public static Map<ResourceLocation, LootTable> tables = new HashMap<>();
+    protected final DataGenerator generator;
 
     public ModLootTableProvider(DataGenerator generator) {
         super(generator);
         this.generator = generator;
     }
-
+/*
     @Override
-    public void run(HashCache cache) {
-        createSelfDrop(ModBlocks.CHEESE_BLOCK, cache);
+    public void run(CachedOutput p_236269_) {
+        super.run(p_236269_);
     }
 
-    public void createSelfDrop(RegistryObject<? extends Block> block, HashCache cache) {
-        Path outputFolder = generator.getOutputFolder();
-        LootTable table = new LootTable.Builder().withPool(new LootPool.Builder().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block.get())).when(ExplosionCondition.survivesExplosion())).setParamSet(LootContextParamSets.BLOCK).build();
-        Path path = outputFolder.resolve("data/cheesemaking/loot_tables/blocks/" + block.getId().getPath() + ".json");
-        try {
-            DataProvider.save(GSON, cache, LootTables.serialize(table), path);
-        } catch (Exception e) {
-            LOGGER.error("Couldn't write loot table {}", path, e);
-        }
-    }
+    private void writeTables(HashCache cache, Map<ResourceLocation, LootTable> tables) {
+        Path outputFolder = this.generator.getOutputFolder();
+        tables.forEach((key, lootTable) -> {
+            Path path = outputFolder.resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json");
+            try {
+                DataProvider.save(GSON, cache, LootTables.serialize(lootTable), path);
+            } catch (IOException e) {
+                LOGGER.error("Couldn't write loot table {}", path, (Object) e);
+            }
+        });
+        lootTables.forEach(blockBuilderMap -> {
+            for (Map.Entry<Block, LootTable.Builder> entry : blockBuilderMap.entrySet()) {
+                tables.put(entry.getKey().getLootTable(), entry.getValue().build());
+            }
+        });
+    }*/
 }
+
